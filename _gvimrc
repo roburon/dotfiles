@@ -1,0 +1,41 @@
+"カラースキーム
+colorscheme desert
+
+"フォント設定
+"set guifont=Osaka-等幅:12:cSHIFTJIS
+set guifont=ゆたぽん（コーディング）:h12:cSHIFTJIS
+set linespace=0
+
+" 画面表示関連
+set number		    "行番号の表示
+set ruler	    	"カーソル位置の表示
+set cursorline		"カーソル行の色付け
+set nocursorcolumn	"カーソル列の色付け(オフ)
+set laststatus=2	"ステータスの表示(0=表示なし 1=ウィンドウが2つ以上のみ表示 2=常に表示)
+set cmdheight=2		"メッセージの表示数
+set showmatch		"対応する括弧の色付け
+set helpheight=999	"ヘルプ画面の行数
+set wrap	    	"ウィンドウよりも長い行は折り返され、次の行に続けて表示される
+set nolist         	"不可視文字の表示
+set showtabline=2   "タブライン表示
+
+start "" "C:/Users/sato/vim/gvim.exe" --remote-tab-silent %*
+
+"ウィンドウの位置とサイズの記憶＆復元(vimWinPosに情報をしまう)
+let g:save_window_file = expand('~/vim/vimWinPos')
+augroup SaveWindow
+  autocmd!
+  autocmd VimLeavePre * call s:save_window()
+  function! s:save_window()
+    let options = [
+      \ 'set columns=' . &columns,
+      \ 'set lines=' . &lines,
+      \ 'winpos ' . getwinposx() . ' ' . getwinposy(),
+      \ ]
+    call writefile(options, g:save_window_file)
+  endfunction
+augroup END
+
+if filereadable(g:save_window_file)
+  execute 'source' g:save_window_file
+endif
